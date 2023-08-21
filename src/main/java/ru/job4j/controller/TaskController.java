@@ -4,21 +4,21 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import ru.job4j.model.Task;
-import ru.job4j.repository.MemoryTaskRepository;
-import ru.job4j.repository.TaskRepository;
-
-import javax.servlet.http.HttpServletRequest;
-import java.time.LocalDateTime;
+import ru.job4j.service.TaskService;
 
 @Controller
-@RequestMapping("/tasks") /* Работать с кандидатами будем по URI /tasks/** */
+@RequestMapping("/tasks") /* Работать с задачами будем по URI /tasks/** */
 public class TaskController {
 
-    private final TaskRepository taskRepository = MemoryTaskRepository.getInstance();
+    private final TaskService taskService;
+
+    public TaskController(TaskService taskService) {
+        this.taskService = taskService;
+    }
 
     @GetMapping
     public String getAll(Model model) {
-        model.addAttribute("tasks", taskRepository.findAll());
+        model.addAttribute("tasks", taskService.findAll());
         return "tasks/list";
     }
 
@@ -29,13 +29,13 @@ public class TaskController {
 
     @PostMapping("/create")
     public String create(@ModelAttribute Task task) {
-        taskRepository.save(task);
+        taskService.save(task);
         return "redirect:/tasks";
     }
 
     @GetMapping("/{id}")
     public String getById(Model model, @PathVariable int id) {
-        var taskOptional = taskRepository.findById(id);
+        var taskOptional = taskService.findById(id);
         if (taskOptional.isEmpty()) {
             model.addAttribute("message", "Задача с указанным идентификатором не найдена");
             return "errors/404";
@@ -46,7 +46,7 @@ public class TaskController {
 
     @PostMapping("/update")
     public String update(@ModelAttribute Task task, Model model) {
-        var isUpdated = taskRepository.update(task);
+        var isUpdated = taskService.update(task);
         if (!isUpdated) {
             model.addAttribute("message", "Задача с указанным идентификатором не найдена");
             return "errors/404";
@@ -56,12 +56,11 @@ public class TaskController {
 
     @GetMapping("/delete/{id}")
     public String delete(Model model, @PathVariable int id) {
-        var isDeleted = taskRepository.deleteById(id);
+        var isDeleted = taskService.deleteById(id);
         if (!isDeleted) {
             model.addAttribute("message", "Задача с указанным идентификатором не найдена");
             return "errors/404";
         }
         return "redirect:/tasks";
     }
-
 }

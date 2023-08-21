@@ -16,14 +16,15 @@ public class Task {
     private String description;
     private LocalDateTime created = LocalDateTime.now();
     private boolean done;
-
+    private boolean visible;
     public Task() {
     }
 
-    public Task(Integer id, String description, LocalDateTime created, boolean done) {
+    public Task(Integer id, String description, LocalDateTime created, boolean done, boolean visible) {
         this.id = id;
         this.description = description;
         this.created = created;
         this.done = done;
+        this.visible = visible;
     }
 }

@@ -1,11 +1,11 @@
-package ru.job4j.repository;
+package ru.job4j.service;
 
 import ru.job4j.model.Task;
 
 import java.util.Collection;
 import java.util.Optional;
 
-public interface TaskRepository {
+public interface TaskService {
 
     Task save(Task task);
 
@@ -17,5 +17,4 @@ public interface TaskRepository {
 
     Collection<Task> findAll();
 
-    boolean isDone(Task task);
 }
