@@ -17,5 +17,6 @@ public interface TaskRepository {
 
     Collection<Task> findAll();
 
-    boolean isDone(Task task);
+    Collection<Task> findIsDone();
+
 }

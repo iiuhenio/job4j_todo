@@ -4,6 +4,7 @@ import net.jcip.annotations.ThreadSafe;
 import org.springframework.stereotype.Repository;
 import ru.job4j.model.Task;
 
+import javax.persistence.criteria.CriteriaBuilder;
 import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.HashMap;
@@ -18,6 +19,7 @@ public class MemoryTaskRepository implements TaskRepository {
     private AtomicInteger nextId = new AtomicInteger(1);
 
     private final Map<Integer, Task> tasks = new HashMap<>();
+    private final Map<Integer, Task> tasksIsDone = new HashMap<>();
 
     private MemoryTaskRepository() {
         save(new Task(1, "Description", LocalDateTime.now(), false, true));
@@ -59,13 +61,20 @@ public class MemoryTaskRepository implements TaskRepository {
     }
 
     @Override
-    public boolean isDone(Task task) {
-        return tasks.computeIfPresent(task.getId(), (id, oldTask) ->
-                new Task(oldTask.getId(),
-                        task.getDescription(),
-                        task.getCreated(),
-                        task.isVisible(),
-                        task.isDone())) != null;
+    public Collection<Task> findIsDone() {
+        Map<Integer, Task> isDone = new HashMap<>();
+        Integer count = 1;
+        for (Map.Entry<Integer, Task> entry : tasks.entrySet()) {
+            Integer key = entry.getKey();
+            Task value = entry.getValue();
+            if (value.isDone()) {
+                tasksIsDone.put(count, value);
+                count++;
+            }
+
+        }
+        return tasksIsDone.values();
     }
+
 
 }

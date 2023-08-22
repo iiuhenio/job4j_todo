@@ -27,6 +27,26 @@ public class TaskController {
         return "tasks/create";
     }
 
+
+    @GetMapping("/isNotDone")
+    public String getIsNotDone(Model model) {
+        model.addAttribute("tasks", taskService.findAll());
+        return "tasks/isNotDone";
+    }
+
+
+    @GetMapping("/all")
+    public String getAll() {
+        return "tasks/all";
+    }
+
+
+    @GetMapping("/isDone")
+    public String getIsDone(Model model, Task task) {
+        model.addAttribute("tasks", taskService.findIsDone());
+        return "tasks/isDone";
+    }
+
     @PostMapping("/create")
     public String create(@ModelAttribute Task task) {
         taskService.save(task);
