@@ -17,8 +17,10 @@
     <div class="container mt-2">
         <h3>Проект job4j_ToDo</h3>
         <ul>
-            <li><a th:href="@{/tasks}">Задачи</a></li>
             <li><a th:href="@{/tasks/create}">Создать задачу</a></li>
+            <li><a th:href="@{/tasks}">Все задачи</a></li>
+            <li><a th:href="@{/tasks/isDone}">Выполненные</a></li>
+            <li><a th:href="@{/tasks/isNotDone}">Новые</a></li>
         </ul>
     </div>
     <footer th:insert="blocks/footer :: footer"></footer>

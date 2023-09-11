@@ -18,11 +18,11 @@
         <form class="mt-3" th:action="@{/tasks/update}" method="post" th:object="${task}">
             <div class="mb-3">
                 <label for="name" class="form-label"><b>Название</b></label>
-                <textarea class="form-control" id="name" name="name" th:field="*{name}" rows="1" placeholder="Название"disabled="disabled">> </textarea>
+                <textarea class="form-control" id="name" name="name" th:field="*{name}" rows="1" placeholder="Название"> </textarea>
             </div>
             <div class="mb-3">
                 <label for="description" class="form-label"><b>Описание</b></label>
-                <textarea class="form-control" id="description" name="description" th:field="*{description}" rows="8" placeholder="Опишите задачу"disabled="disabled"></textarea>
+                <textarea class="form-control" id="description" name="description" th:field="*{description}" rows="8" placeholder="Опишите задачу"></textarea>
             </div>
             <div class="mb-3 row">
                 <div class="col-6"></div>
@@ -30,7 +30,7 @@
                     <div class="d-grid gap-2 d-md-flex justify-content-md-end">
                         <div class="col-4"><a class="btn btn-light w-100" th:href="@{/tasks}">Отмена</a></div>
                         <div class="col-4"><a class="btn btn-danger w-100" th:href="@{/tasks/delete/{id}(id=${task.id})}">Удалить</a></div>
-                        <div class="col-6"><a class="btn btn-primary w-100" th:href="@{/tasks/edit}">Обновить</a></div>
+                        <div class="col-4"><button class="btn btn-primary w-100" type="submit">Обновить</button></div>
                         <div class="col-4"><a class="btn btn-success w-100" th:href="@{/tasks/done/{id}(id=${task.id})}">Сделано</a></div>
                     </div>
                 </div>

@@ -47,4 +47,13 @@ public class SimpleTaskService implements TaskService {
 
     }
 
+    @Override
+    public Collection<Task> findIsNotDone() {
+        return taskRepository.findIsNotDone();
+    }
+
+    public boolean done(int id) {
+        return taskRepository.done(id);
+    }
+
 }

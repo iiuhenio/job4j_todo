@@ -1,7 +1,7 @@
 <div th:fragment="header" xmlns:th="http://www.w3.org/1999/xhtml">
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <div class="container">
-            <a class="navbar-brand" href="/">Job4jToDo</a>
+            <a class="navbar-brand" href="/">ToDo</a>
             <div class="collapse navbar-collapse">
                 <div class="navbar-nav">
                     <a class="nav-item nav-link" href="/">Главная</a>
@@ -9,7 +9,6 @@
                     <a class="nav-item nav-link active" th:href="@{/tasks/isDone}">Выполненные</a>
                     <a class="nav-item nav-link active" th:href="@{/tasks/isNotDone}">Новые</a>
                     <a class="nav-item nav-link active" th:href="@{/tasks/create}">Создать задачу</a>
-
                 </div>
             </div>
         </div>

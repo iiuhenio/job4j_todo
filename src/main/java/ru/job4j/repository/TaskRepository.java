@@ -19,4 +19,8 @@ public interface TaskRepository {
 
     Collection<Task> findIsDone();
 
+    Collection<Task> findIsNotDone();
+
+    boolean done(int id);
+
 }

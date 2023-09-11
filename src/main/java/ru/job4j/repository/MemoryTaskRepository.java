@@ -20,11 +20,12 @@ public class MemoryTaskRepository implements TaskRepository {
 
     private final Map<Integer, Task> tasks = new HashMap<>();
     private final Map<Integer, Task> tasksIsDone = new HashMap<>();
+    private final Map<Integer, Task> tasksIsNotDone = new HashMap<>();
 
     private MemoryTaskRepository() {
-        save(new Task(1, "Description", LocalDateTime.now(), false, true));
-        save(new Task(2, "Description2", LocalDateTime.now(), false, true));
-        save(new Task(3, "Description3", LocalDateTime.now(), true, true));
+        save(new Task(1, "Приготовить еду", "Для всей семьи", LocalDateTime.now(), false, true));
+        save(new Task(2, "Выполнить работу", "Сделать сайт", LocalDateTime.now(), false, true));
+        save(new Task(3, "Погулять с собакой", "Не забыть поводок", LocalDateTime.now(), true, true));
     }
 
 
@@ -37,17 +38,28 @@ public class MemoryTaskRepository implements TaskRepository {
 
     @Override
     public boolean deleteById(int id) {
-        return tasks.remove(id) != null;
+        tasksIsDone.remove(id);
+        tasksIsNotDone.remove(id);
+        tasks.remove(id);
+        return true;
     }
 
     @Override
     public boolean update(Task task) {
         return tasks.computeIfPresent(task.getId(), (id, oldTask) ->
                 new Task(oldTask.getId(),
+                        task.getName(),
                         task.getDescription(),
                         task.getCreated(),
                         task.isVisible(),
                         task.isDone())) != null;
+    }
+
+    @Override
+    public boolean done(int id) {
+        tasks.get(id).setDone(true);
+        tasksIsNotDone.remove(id);
+        return true;
     }
 
     @Override
@@ -62,19 +74,27 @@ public class MemoryTaskRepository implements TaskRepository {
 
     @Override
     public Collection<Task> findIsDone() {
-        Map<Integer, Task> isDone = new HashMap<>();
         Integer count = 1;
         for (Map.Entry<Integer, Task> entry : tasks.entrySet()) {
-            Integer key = entry.getKey();
             Task value = entry.getValue();
             if (value.isDone()) {
                 tasksIsDone.put(count, value);
                 count++;
             }
-
         }
         return tasksIsDone.values();
     }
 
-
+    @Override
+    public Collection<Task> findIsNotDone() {
+        Integer count = 1;
+        for (Map.Entry<Integer, Task> entry : tasks.entrySet()) {
+            Task value = entry.getValue();
+            if (!value.isDone()) {
+                tasksIsNotDone.put(count, value);
+                count++;
+            }
+        }
+        return tasksIsNotDone.values();
+    }
 }

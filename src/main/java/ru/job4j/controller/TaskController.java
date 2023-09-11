@@ -16,11 +16,41 @@ public class TaskController {
         this.taskService = taskService;
     }
 
+    /*
+    Находим все заявки
+     */
     @GetMapping
     public String getAll(Model model) {
         model.addAttribute("tasks", taskService.findAll());
         return "tasks/list";
     }
+
+    /*
+    Находим новые заявки
+     */
+    @GetMapping("/isNotDone")
+    public String getIsNotDone(Model model) {
+        model.addAttribute("tasks", taskService.findIsNotDone());
+        return "tasks/isNotDone";
+    }
+
+    /*
+    Находим сделанные заявки
+     */
+    @GetMapping("/isDone")
+    public String getIsDone(Model model, Task task) {
+        model.addAttribute("tasks", taskService.findIsDone());
+        return "tasks/isDone";
+    }
+
+    /*
+    @GetMapping("/{id}")
+    public String getEdit(Model model, @PathVariable int id) {
+        model.addAttribute("tasks", taskService.findById(id));
+        return "tasks/edit";
+    }
+
+     */
 
     @GetMapping("/create")
     public String getCreationPage() {
@@ -28,24 +58,6 @@ public class TaskController {
     }
 
 
-    @GetMapping("/isNotDone")
-    public String getIsNotDone(Model model) {
-        model.addAttribute("tasks", taskService.findAll());
-        return "tasks/isNotDone";
-    }
-
-
-    @GetMapping("/all")
-    public String getAll() {
-        return "tasks/all";
-    }
-
-
-    @GetMapping("/isDone")
-    public String getIsDone(Model model, Task task) {
-        model.addAttribute("tasks", taskService.findIsDone());
-        return "tasks/isDone";
-    }
 
     @PostMapping("/create")
     public String create(@ModelAttribute Task task) {
@@ -78,6 +90,16 @@ public class TaskController {
     public String delete(Model model, @PathVariable int id) {
         var isDeleted = taskService.deleteById(id);
         if (!isDeleted) {
+            model.addAttribute("message", "Задача с указанным идентификатором не найдена");
+            return "errors/404";
+        }
+        return "redirect:/tasks";
+    }
+
+    @GetMapping("/done/{id}")
+    public String done(Model model, @PathVariable int id) {
+        var isDone = taskService.done(id);
+        if (!isDone) {
             model.addAttribute("message", "Задача с указанным идентификатором не найдена");
             return "errors/404";
         }
