@@ -1,6 +1,5 @@
-CREATE TABLE if not exists tasks (
+CREATE TABLE tasks (
    id SERIAL PRIMARY KEY,
-   name TEXT,
    description TEXT,
    created TIMESTAMP,
    done BOOLEAN
